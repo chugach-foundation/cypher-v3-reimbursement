@@ -17,7 +17,7 @@ pub struct Table {
     pub authority: Pubkey,
 }
 const_assert_eq!(size_of::<Table>(), 4 + 4 + 32);
-const_assert_eq!(size_of::<Row>() % 8, 0);
+const_assert_eq!(size_of::<Table>() % 8, 0);
 
 impl Table {
     pub fn get_num_rows<'a>(table_ai: &'a AccountInfo) -> Result<usize> {
