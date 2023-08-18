@@ -20,7 +20,7 @@ import {
   TOKEN_PROGRAM_ID,
   TYPE_SIZE,
 } from "@solana/spl-token";
-import { MangoV3ReimbursementClient } from "./client";
+import { CypherV3ReimbursementClient } from "./client";
 import BN from "bn.js";
 import fs from "fs";
 
@@ -53,15 +53,15 @@ async function main() {
   );
   const adminWallet = new Wallet(admin);
   const provider = new AnchorProvider(connection, adminWallet, options);
-  const mangoV3ReimbursementClient = new MangoV3ReimbursementClient(provider);
+  const cypherV3ReimbursementClient = new CypherV3ReimbursementClient(provider);
 
   // Create group if not already
   if (
-    !(await mangoV3ReimbursementClient.program.account.group.all()).find(
+    !(await cypherV3ReimbursementClient.program.account.group.all()).find(
       (group) => group.account.groupNum === GROUP_NUM
     )
   ) {
-    const sig = await mangoV3ReimbursementClient.program.methods
+    const sig = await cypherV3ReimbursementClient.program.methods
       .createGroup(
         GROUP_NUM,
         new PublicKey("E3ZucWEddfWaDYUXVQbJYRYD9oNHUsWNkFVW73Y2by52"),
@@ -69,10 +69,10 @@ async function main() {
       )
       .accounts({
         table: new PublicKey("45F9oyj2Jr5pfz1bLoupLGujXkamZEy3RXeKBZudKmJw"),
-        payer: (mangoV3ReimbursementClient.program.provider as AnchorProvider)
+        payer: (cypherV3ReimbursementClient.program.provider as AnchorProvider)
           .wallet.publicKey,
         authority: (
-          mangoV3ReimbursementClient.program.provider as AnchorProvider
+          cypherV3ReimbursementClient.program.provider as AnchorProvider
         ).wallet.publicKey,
       })
       .rpc();
@@ -84,11 +84,11 @@ async function main() {
   }
 
   let group = (
-    await mangoV3ReimbursementClient.program.account.group.all()
+    await cypherV3ReimbursementClient.program.account.group.all()
   ).find((group) => group.account.groupNum === GROUP_NUM);
 
   // Reload group
-  group = (await mangoV3ReimbursementClient.program.account.group.all()).find(
+  group = (await cypherV3ReimbursementClient.program.account.group.all()).find(
     (group) => group.account.groupNum === GROUP_NUM
   );
 
@@ -116,14 +116,14 @@ async function main() {
     const claimMint = (
       await PublicKey.findProgramAddress(
         [Buffer.from("Mint"), group?.publicKey.toBuffer()!, bU64],
-        mangoV3ReimbursementClient.program.programId
+        cypherV3ReimbursementClient.program.programId
       )
     )[0];
     const claimTransferTokenAccount = await getAssociatedTokenAddress(
       claimMint,
       group.account.claimTransferDestination
     );
-    sig = await mangoV3ReimbursementClient.program.methods
+    sig = await cypherV3ReimbursementClient.program.methods
       .createVault(new BN(index))
       .accounts({
         vault: await getAssociatedTokenAddress(
@@ -135,7 +135,7 @@ async function main() {
         mint: tokenInfo.mint,
         claimTransferTokenAccount,
         claimTransferDestination: group.account.claimTransferDestination,
-        payer: (mangoV3ReimbursementClient.program.provider as AnchorProvider)
+        payer: (cypherV3ReimbursementClient.program.provider as AnchorProvider)
           .wallet.publicKey,
       })
       .rpc();
@@ -151,7 +151,7 @@ async function main() {
   }
 
   // Reload group
-  group = (await mangoV3ReimbursementClient.program.account.group.all()).find(
+  group = (await cypherV3ReimbursementClient.program.account.group.all()).find(
     (group) => group.account.groupNum === GROUP_NUM
   );
 
@@ -171,17 +171,17 @@ async function main() {
   }
 
   // Reload group
-  group = (await mangoV3ReimbursementClient.program.account.group.all()).find(
+  group = (await cypherV3ReimbursementClient.program.account.group.all()).find(
     (group) => group.account.groupNum === GROUP_NUM
   );
 
   if (group?.account.reimbursementStarted === 0) {
-    sig = await mangoV3ReimbursementClient.program.methods
+    sig = await cypherV3ReimbursementClient.program.methods
       .startReimbursement()
       .accounts({
         group: (group as any).publicKey,
         authority: (
-          mangoV3ReimbursementClient.program.provider as AnchorProvider
+          cypherV3ReimbursementClient.program.provider as AnchorProvider
         ).wallet.publicKey,
       })
       .rpc();

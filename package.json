@@ -11,6 +11,7 @@
     "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check"
   },
   "dependencies": {
+    "@chugach-foundation/cypher-client": "5.1.9",
     "@blockworks-foundation/mango-client": "^3.6.20",
     "@project-serum/anchor": "^0.25.0",
     "@solana/spl-token": "^0.3.5",

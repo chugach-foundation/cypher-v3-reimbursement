@@ -1,6 +1,6 @@
-export type MangoV3Reimbursement = {
+export type CypherV3Reimbursement = {
   "version": "0.1.0",
-  "name": "mango_v3_reimbursement",
+  "name": "cypher_v3_reimbursement",
   "instructions": [
     {
       "name": "createGroup",
@@ -108,6 +108,86 @@ export type MangoV3Reimbursement = {
       ]
     },
     {
+      "name": "createTable",
+      "accounts": [
+        {
+          "name": "table",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "Table"
+              },
+              {
+                "kind": "arg",
+                "type": "u32",
+                "path": "table_num"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tableNum",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "addRows",
+      "accounts": [
+        {
+          "name": "table",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "rows",
+          "type": {
+            "vec": {
+              "defined": "Row"
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "createVault",
       "accounts": [
         {
@@ -153,7 +233,9 @@ export type MangoV3Reimbursement = {
               },
               {
                 "kind": "arg",
-                "type": "u64",
+                "type": {
+                  "defined": "usize"
+                },
                 "path": "token_index"
               }
             ]
@@ -183,17 +265,14 @@ export type MangoV3Reimbursement = {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
-        },
-        {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
         }
       ],
       "args": [
         {
           "name": "tokenIndex",
-          "type": "u64"
+          "type": {
+            "defined": "usize"
+          }
         }
       ]
     },
@@ -229,7 +308,9 @@ export type MangoV3Reimbursement = {
       "args": [
         {
           "name": "tokenIndex",
-          "type": "u64"
+          "type": {
+            "defined": "usize"
+          }
         }
       ]
     },
@@ -260,13 +341,13 @@ export type MangoV3Reimbursement = {
               {
                 "kind": "account",
                 "type": "publicKey",
-                "path": "mango_account_owner"
+                "path": "cypher_account_owner"
               }
             ]
           }
         },
         {
-          "name": "mangoAccountOwner",
+          "name": "cypherAccountOwner",
           "isMut": false,
           "isSigner": false
         },
@@ -306,6 +387,28 @@ export type MangoV3Reimbursement = {
     },
     {
       "name": "reimburse",
+      "docs": [
+        "Disclaimer:",
+        "Please make sure you and your users (of integrating programs) read and accept",
+        "the following waiver when reclaiming their funds using below instruction:",
+        "",
+        "By executing this instruction and accepting the tokens, I hereby",
+        "irrevocably sell, convey, transfer and assign to Mango Labs,",
+        "LLC all of my right, title and interest in, to and under all",
+        "claims arising out of or related to the loss of my tokens in",
+        "the October 2022 incident, including, without limitation, all",
+        "of my causes of action or other rights with respect to such",
+        "claims, all rights to receive any amounts or property or other",
+        "distribution in respect of or in connection with such claims,",
+        "and any and all proceeds of any of the foregoing (including",
+        "proceeds of proceeds). I further irrevocably and",
+        "unconditionally release all claims I may have against Mango",
+        "Labs, LLC, the Mango Decentralized Autonomous Entity, its core",
+        "contributors, and any of their agents, affiliates, officers,",
+        "employees, or principals related to this matter. This release",
+        "constitutes an express, informed, knowing and voluntary waiver",
+        "and relinquishment to the fullest extent permitted by law."
+      ],
       "accounts": [
         {
           "name": "group",
@@ -341,13 +444,13 @@ export type MangoV3Reimbursement = {
               {
                 "kind": "account",
                 "type": "publicKey",
-                "path": "mango_account_owner"
+                "path": "cypher_account_owner"
               }
             ]
           }
         },
         {
-          "name": "mangoAccountOwner",
+          "name": "cypherAccountOwner",
           "isMut": false,
           "isSigner": false
         },
@@ -390,11 +493,15 @@ export type MangoV3Reimbursement = {
       "args": [
         {
           "name": "tokenIndex",
-          "type": "u64"
+          "type": {
+            "defined": "usize"
+          }
         },
         {
           "name": "indexIntoTable",
-          "type": "u64"
+          "type": {
+            "defined": "usize"
+          }
         },
         {
           "name": "transferClaim",
@@ -500,6 +607,26 @@ export type MangoV3Reimbursement = {
           }
         ]
       }
+    },
+    {
+      "name": "table",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tableNum",
+            "type": "u32"
+          },
+          {
+            "name": "numRows",
+            "type": "u32"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          }
+        ]
+      }
     }
   ],
   "types": [
@@ -557,13 +684,17 @@ export type MangoV3Reimbursement = {
     {
       "code": 6007,
       "name": "TableRowHasWrongOwner"
+    },
+    {
+      "code": 6008,
+      "name": "MustTransferClaim"
     }
   ]
 };
 
-export const IDL: MangoV3Reimbursement = {
+export const IDL: CypherV3Reimbursement = {
   "version": "0.1.0",
-  "name": "mango_v3_reimbursement",
+  "name": "cypher_v3_reimbursement",
   "instructions": [
     {
       "name": "createGroup",
@@ -671,6 +802,86 @@ export const IDL: MangoV3Reimbursement = {
       ]
     },
     {
+      "name": "createTable",
+      "accounts": [
+        {
+          "name": "table",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "Table"
+              },
+              {
+                "kind": "arg",
+                "type": "u32",
+                "path": "table_num"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tableNum",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "addRows",
+      "accounts": [
+        {
+          "name": "table",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "rows",
+          "type": {
+            "vec": {
+              "defined": "Row"
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "createVault",
       "accounts": [
         {
@@ -716,7 +927,9 @@ export const IDL: MangoV3Reimbursement = {
               },
               {
                 "kind": "arg",
-                "type": "u64",
+                "type": {
+                  "defined": "usize"
+                },
                 "path": "token_index"
               }
             ]
@@ -746,17 +959,14 @@ export const IDL: MangoV3Reimbursement = {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
-        },
-        {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
         }
       ],
       "args": [
         {
           "name": "tokenIndex",
-          "type": "u64"
+          "type": {
+            "defined": "usize"
+          }
         }
       ]
     },
@@ -792,7 +1002,9 @@ export const IDL: MangoV3Reimbursement = {
       "args": [
         {
           "name": "tokenIndex",
-          "type": "u64"
+          "type": {
+            "defined": "usize"
+          }
         }
       ]
     },
@@ -823,13 +1035,13 @@ export const IDL: MangoV3Reimbursement = {
               {
                 "kind": "account",
                 "type": "publicKey",
-                "path": "mango_account_owner"
+                "path": "cypher_account_owner"
               }
             ]
           }
         },
         {
-          "name": "mangoAccountOwner",
+          "name": "cypherAccountOwner",
           "isMut": false,
           "isSigner": false
         },
@@ -869,6 +1081,28 @@ export const IDL: MangoV3Reimbursement = {
     },
     {
       "name": "reimburse",
+      "docs": [
+        "Disclaimer:",
+        "Please make sure you and your users (of integrating programs) read and accept",
+        "the following waiver when reclaiming their funds using below instruction:",
+        "",
+        "By executing this instruction and accepting the tokens, I hereby",
+        "irrevocably sell, convey, transfer and assign to Mango Labs,",
+        "LLC all of my right, title and interest in, to and under all",
+        "claims arising out of or related to the loss of my tokens in",
+        "the October 2022 incident, including, without limitation, all",
+        "of my causes of action or other rights with respect to such",
+        "claims, all rights to receive any amounts or property or other",
+        "distribution in respect of or in connection with such claims,",
+        "and any and all proceeds of any of the foregoing (including",
+        "proceeds of proceeds). I further irrevocably and",
+        "unconditionally release all claims I may have against Mango",
+        "Labs, LLC, the Mango Decentralized Autonomous Entity, its core",
+        "contributors, and any of their agents, affiliates, officers,",
+        "employees, or principals related to this matter. This release",
+        "constitutes an express, informed, knowing and voluntary waiver",
+        "and relinquishment to the fullest extent permitted by law."
+      ],
       "accounts": [
         {
           "name": "group",
@@ -904,13 +1138,13 @@ export const IDL: MangoV3Reimbursement = {
               {
                 "kind": "account",
                 "type": "publicKey",
-                "path": "mango_account_owner"
+                "path": "cypher_account_owner"
               }
             ]
           }
         },
         {
-          "name": "mangoAccountOwner",
+          "name": "cypherAccountOwner",
           "isMut": false,
           "isSigner": false
         },
@@ -953,11 +1187,15 @@ export const IDL: MangoV3Reimbursement = {
       "args": [
         {
           "name": "tokenIndex",
-          "type": "u64"
+          "type": {
+            "defined": "usize"
+          }
         },
         {
           "name": "indexIntoTable",
-          "type": "u64"
+          "type": {
+            "defined": "usize"
+          }
         },
         {
           "name": "transferClaim",
@@ -1063,6 +1301,26 @@ export const IDL: MangoV3Reimbursement = {
           }
         ]
       }
+    },
+    {
+      "name": "table",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tableNum",
+            "type": "u32"
+          },
+          {
+            "name": "numRows",
+            "type": "u32"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          }
+        ]
+      }
     }
   ],
   "types": [
@@ -1120,6 +1378,10 @@ export const IDL: MangoV3Reimbursement = {
     {
       "code": 6007,
       "name": "TableRowHasWrongOwner"
+    },
+    {
+      "code": 6008,
+      "name": "MustTransferClaim"
     }
   ]
 };

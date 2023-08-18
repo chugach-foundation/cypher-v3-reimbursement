@@ -1,6 +1,6 @@
 import { AnchorProvider, Wallet } from "@project-serum/anchor";
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
-import { MangoV3ReimbursementClient } from "./client";
+import { CypherV3ReimbursementClient } from "./client";
 import fs from "fs";
 import {
   Cluster,
@@ -39,7 +39,7 @@ async function main() {
   );
   const adminWallet = new Wallet(admin);
   const provider = new AnchorProvider(connection, adminWallet, options);
-  const mangoV3ReimbursementClient = new MangoV3ReimbursementClient(provider);
+  const cypherV3ReimbursementClient = new CypherV3ReimbursementClient(provider);
 
   // v3 tokens and cache
   const mangoGroup = await mangoV3Client.getMangoGroup(mangoGroupKey);
@@ -48,7 +48,7 @@ async function main() {
 
   // load group
   let group = (
-    await mangoV3ReimbursementClient.program.account.group.all()
+    await cypherV3ReimbursementClient.program.account.group.all()
   ).find((group) => group.account.groupNum === GROUP_NUM);
 
   let signatures;

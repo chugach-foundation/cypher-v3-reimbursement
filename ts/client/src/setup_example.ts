@@ -20,7 +20,7 @@ import {
   TOKEN_PROGRAM_ID,
   TYPE_SIZE,
 } from "@solana/spl-token";
-import { MangoV3ReimbursementClient } from "./client";
+import { CypherV3ReimbursementClient } from "./client";
 import BN from "bn.js";
 import fs from "fs";
 
@@ -58,15 +58,15 @@ async function main() {
   );
   const adminWallet = new Wallet(admin);
   const provider = new AnchorProvider(connection, adminWallet, options);
-  const mangoV3ReimbursementClient = new MangoV3ReimbursementClient(provider);
+  const cypherV3ReimbursementClient = new CypherV3ReimbursementClient(provider);
 
   // Create group if not already
   if (
-    !(await mangoV3ReimbursementClient.program.account.group.all()).find(
+    !(await cypherV3ReimbursementClient.program.account.group.all()).find(
       (group) => group.account.groupNum === GROUP_NUM
     )
   ) {
-    const sig = await mangoV3ReimbursementClient.program.methods
+    const sig = await cypherV3ReimbursementClient.program.methods
       .createGroup(
         GROUP_NUM,
         new PublicKey("mdcXrm2NkzXYvHNcKXzCLXT58R4UN8Rzd1uzD4h8338"),
@@ -74,10 +74,10 @@ async function main() {
       )
       .accounts({
         table: new PublicKey("tab2GSQhmstsCiPmPABk1F8QnffSaFEXnqbef7AkEnB"),
-        payer: (mangoV3ReimbursementClient.program.provider as AnchorProvider)
+        payer: (cypherV3ReimbursementClient.program.provider as AnchorProvider)
           .wallet.publicKey,
         authority: (
-          mangoV3ReimbursementClient.program.provider as AnchorProvider
+          cypherV3ReimbursementClient.program.provider as AnchorProvider
         ).wallet.publicKey,
       })
       .rpc({ skipPreflight: true });
@@ -88,11 +88,11 @@ async function main() {
     );
   }
   let group = (
-    await mangoV3ReimbursementClient.program.account.group.all()
+    await cypherV3ReimbursementClient.program.account.group.all()
   ).find((group) => group.account.groupNum === GROUP_NUM);
 
   // Reload group
-  group = (await mangoV3ReimbursementClient.program.account.group.all()).find(
+  group = (await cypherV3ReimbursementClient.program.account.group.all()).find(
     (group) => group.account.groupNum === GROUP_NUM
   );
 
@@ -120,14 +120,14 @@ async function main() {
     const claimMint = (
       await PublicKey.findProgramAddress(
         [Buffer.from("Mint"), group?.publicKey.toBuffer()!, bU64],
-        mangoV3ReimbursementClient.program.programId
+        cypherV3ReimbursementClient.program.programId
       )
     )[0];
     const claimTransferTokenAccount = await getAssociatedTokenAddress(
       claimMint,
       group.account.claimTransferDestination
     );
-    const sig = await mangoV3ReimbursementClient.program.methods
+    const sig = await cypherV3ReimbursementClient.program.methods
       .createVault(new BN(index))
       .accounts({
         vault: await getAssociatedTokenAddress(
@@ -139,7 +139,7 @@ async function main() {
         mint: tokenInfo.mint,
         claimTransferTokenAccount,
         claimTransferDestination: group.account.claimTransferDestination,
-        payer: (mangoV3ReimbursementClient.program.provider as AnchorProvider)
+        payer: (cypherV3ReimbursementClient.program.provider as AnchorProvider)
           .wallet.publicKey,
       })
       .rpc();
@@ -155,7 +155,7 @@ async function main() {
   }
 
   // Reload group
-  group = (await mangoV3ReimbursementClient.program.account.group.all()).find(
+  group = (await cypherV3ReimbursementClient.program.account.group.all()).find(
     (group) => group.account.groupNum === GROUP_NUM
   );
 
@@ -210,18 +210,18 @@ async function main() {
     });
 
   // Reload group
-  group = (await mangoV3ReimbursementClient.program.account.group.all()).find(
+  group = (await cypherV3ReimbursementClient.program.account.group.all()).find(
     (group) => group.account.groupNum === GROUP_NUM
   );
 
   // Set start reimbursement flag to true
   if (group?.account.reimbursementStarted === 0) {
-    sig = await mangoV3ReimbursementClient.program.methods
+    sig = await cypherV3ReimbursementClient.program.methods
       .startReimbursement()
       .accounts({
         group: (group as any).publicKey,
         authority: (
-          mangoV3ReimbursementClient.program.provider as AnchorProvider
+          cypherV3ReimbursementClient.program.provider as AnchorProvider
         ).wallet.publicKey,
       })
       .rpc();
@@ -240,16 +240,16 @@ async function main() {
         group?.publicKey.toBuffer()!,
         admin.publicKey.toBuffer(),
       ],
-      mangoV3ReimbursementClient.program.programId
+      cypherV3ReimbursementClient.program.programId
     )
   )[0];
   if (!(await connection.getAccountInfo(reimbursementAccount))) {
-    sig = await mangoV3ReimbursementClient.program.methods
+    sig = await cypherV3ReimbursementClient.program.methods
       .createReimbursementAccount()
       .accounts({
         group: (group as any).publicKey,
-        mangoAccountOwner: admin.publicKey,
-        payer: (mangoV3ReimbursementClient.program.provider as AnchorProvider)
+        cypherAccountOwner: admin.publicKey,
+        payer: (cypherV3ReimbursementClient.program.provider as AnchorProvider)
           .wallet.publicKey,
       })
       .rpc({ skipPreflight: true });
@@ -263,15 +263,15 @@ async function main() {
   }
 
   // Table decoding example
-  const rows = await mangoV3ReimbursementClient.decodeTable(group?.account);
+  const rows = await cypherV3ReimbursementClient.decodeTable(group?.account);
   rows.find((row) => row.owner.equals(admin.publicKey)).balances;
 
   // Reimbursement decoding example
   const ra =
-    await mangoV3ReimbursementClient.program.account.reimbursementAccount.fetch(
+    await cypherV3ReimbursementClient.program.account.reimbursementAccount.fetch(
       reimbursementAccount
     );
-  mangoV3ReimbursementClient.reimbursed(ra, 0);
+  cypherV3ReimbursementClient.reimbursed(ra, 0);
 
   // Reimburse
   groupIds?.tokens
@@ -289,7 +289,7 @@ async function main() {
       if (!i) {
         throw new Error("Token not found!");
       }
-      sig = await mangoV3ReimbursementClient.program.methods
+      sig = await cypherV3ReimbursementClient.program.methods
         .reimburse(new BN(i), new BN(0), true)
         .accounts({
           group: (group as any).publicKey,
@@ -304,7 +304,7 @@ async function main() {
             group?.account.claimMints[i]!,
             group?.account.claimTransferDestination!
           ),
-          mangoAccountOwner: admin.publicKey,
+          cypherAccountOwner: admin.publicKey,
           table: group?.account.table,
         })
         .rpc({ skipPreflight: true });

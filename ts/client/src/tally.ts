@@ -21,7 +21,7 @@ import {
   TOKEN_PROGRAM_ID,
   TYPE_SIZE,
 } from "@solana/spl-token";
-import { MangoV3ReimbursementClient } from "./client";
+import { CypherV3ReimbursementClient } from "./client";
 import BN from "bn.js";
 import fs from "fs";
 import { coder } from "@project-serum/anchor/dist/cjs/spl/token";
@@ -55,22 +55,22 @@ async function main() {
   );
   const adminWallet = new Wallet(admin);
   const provider = new AnchorProvider(connection, adminWallet, options);
-  const mangoV3ReimbursementClient = new MangoV3ReimbursementClient(provider);
+  const cypherV3ReimbursementClient = new CypherV3ReimbursementClient(provider);
 
   // load group
   let group = (
-    await mangoV3ReimbursementClient.program.account.group.all()
+    await cypherV3ReimbursementClient.program.account.group.all()
   ).find((group) => group.account.groupNum === GROUP_NUM);
 
   // load table
-  const rows = await mangoV3ReimbursementClient.decodeTable(group.account);
+  const rows = await cypherV3ReimbursementClient.decodeTable(group.account);
 
   let reimbursed = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   let toBeReimbursed = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   // load all reimbursementAccounts
   const ras =
-    await mangoV3ReimbursementClient.program.account.reimbursementAccount.all();
+    await cypherV3ReimbursementClient.program.account.reimbursementAccount.all();
 
   const v3group = await mangoV3Client.getMangoGroup(mangoGroupKey);
 
@@ -82,7 +82,7 @@ async function main() {
           group?.publicKey.toBuffer()!,
           row.owner.toBuffer(),
         ],
-        mangoV3ReimbursementClient.program.programId
+        cypherV3ReimbursementClient.program.programId
       )
     )[0];
 
@@ -115,7 +115,7 @@ async function main() {
         continue;
       }
       // token was reimbursed
-      if (mangoV3ReimbursementClient.reimbursed(ra.account, tokenIndex)) {
+      if (cypherV3ReimbursementClient.reimbursed(ra.account, tokenIndex)) {
         reimbursed[tokenIndex] =
           reimbursed[tokenIndex] + row.balances[tokenIndex].toNumber();
       }
@@ -159,7 +159,7 @@ async function main() {
     const vault = coder()
       .accounts.decode(
         "token",
-        (await mangoV3ReimbursementClient.program.provider.connection.getAccountInfo(
+        (await cypherV3ReimbursementClient.program.provider.connection.getAccountInfo(
           group.account.vaults[tokenIndex]
         ))!.data
       )
@@ -168,7 +168,7 @@ async function main() {
     const claimMintSupply = coder()
       .accounts.decode(
         "mint",
-        (await mangoV3ReimbursementClient.program.provider.connection.getAccountInfo(
+        (await cypherV3ReimbursementClient.program.provider.connection.getAccountInfo(
           group.account.claimMints[tokenIndex]
         ))!.data
       )
