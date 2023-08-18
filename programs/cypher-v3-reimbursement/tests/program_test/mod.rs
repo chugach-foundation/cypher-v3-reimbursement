@@ -99,9 +99,9 @@ impl TestContextBuilder {
         }));
 
         let mut test = ProgramTest::new(
-            "mango_v3_reimbursement",
-            mango_v3_reimbursement::id(),
-            processor!(mango_v3_reimbursement::entry),
+            "cypher_v3_reimbursement",
+            cypher_v3_reimbursement::id(),
+            processor!(cypher_v3_reimbursement::entry),
         );
 
         // intentionally set to as tight as possible, to catch potential problems early

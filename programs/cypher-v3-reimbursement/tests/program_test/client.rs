@@ -10,7 +10,7 @@ use std::sync::Arc;
 
 use super::solana::SolanaCookie;
 use super::utils::TestKeypair;
-use mango_v3_reimbursement::state::*;
+use cypher_v3_reimbursement::state::*;
 
 #[async_trait::async_trait(?Send)]
 pub trait ClientAccountLoader {
@@ -110,6 +110,81 @@ fn make_instruction(
 // ClientInstruction impl
 //
 
+pub struct CreateTableInstruction {
+    pub table_num: u32,
+    pub payer: TestKeypair,
+    pub authority: TestKeypair,
+}
+#[async_trait::async_trait(?Send)]
+impl ClientInstruction for CreateTableInstruction {
+    type Accounts = cypher_v3_reimbursement::accounts::CreateTable;
+    type Instruction = cypher_v3_reimbursement::instruction::CreateTable;
+    async fn to_instruction(
+        &self,
+        _account_loader: impl ClientAccountLoader + 'async_trait,
+    ) -> (Self::Accounts, instruction::Instruction) {
+        let program_id = cypher_v3_reimbursement::id();
+        let instruction = Self::Instruction {
+            table_num: self.table_num,
+        };
+
+        let table = Pubkey::find_program_address(
+            &[b"Table".as_ref(), &self.table_num.to_le_bytes()],
+            &program_id,
+        )
+        .0;
+
+        let accounts = Self::Accounts {
+            table,
+            payer: self.payer.pubkey(),
+            authority: self.authority.pubkey(),
+            system_program: System::id(),
+        };
+
+        let instruction = make_instruction(program_id, &accounts, instruction);
+        (accounts, instruction)
+    }
+
+    fn signers(&self) -> Vec<TestKeypair> {
+        vec![self.payer, self.authority]
+    }
+}
+
+pub struct AddRowsInstruction {
+    pub table: Pubkey,
+    pub payer: TestKeypair,
+    pub authority: TestKeypair,
+    pub rows: Vec<Row>,
+}
+#[async_trait::async_trait(?Send)]
+impl ClientInstruction for AddRowsInstruction {
+    type Accounts = cypher_v3_reimbursement::accounts::AddRows;
+    type Instruction = cypher_v3_reimbursement::instruction::AddRows;
+    async fn to_instruction(
+        &self,
+        _account_loader: impl ClientAccountLoader + 'async_trait,
+    ) -> (Self::Accounts, instruction::Instruction) {
+        let program_id = cypher_v3_reimbursement::id();
+        let instruction = Self::Instruction {
+            rows: self.rows.clone(),
+        };
+
+        let accounts = Self::Accounts {
+            table: self.table,
+            payer: self.payer.pubkey(),
+            authority: self.authority.pubkey(),
+            system_program: System::id(),
+        };
+
+        let instruction = make_instruction(program_id, &accounts, instruction);
+        (accounts, instruction)
+    }
+
+    fn signers(&self) -> Vec<TestKeypair> {
+        vec![self.payer, self.authority]
+    }
+}
+
 pub struct CreateGroupInstruction {
     pub group_num: u32,
     pub claim_transfer_destination: Pubkey,
@@ -120,13 +195,13 @@ pub struct CreateGroupInstruction {
 }
 #[async_trait::async_trait(?Send)]
 impl ClientInstruction for CreateGroupInstruction {
-    type Accounts = mango_v3_reimbursement::accounts::CreateGroup;
-    type Instruction = mango_v3_reimbursement::instruction::CreateGroup;
+    type Accounts = cypher_v3_reimbursement::accounts::CreateGroup;
+    type Instruction = cypher_v3_reimbursement::instruction::CreateGroup;
     async fn to_instruction(
         &self,
         _account_loader: impl ClientAccountLoader + 'async_trait,
     ) -> (Self::Accounts, instruction::Instruction) {
-        let program_id = mango_v3_reimbursement::id();
+        let program_id = cypher_v3_reimbursement::id();
         let instruction = Self::Instruction {
             group_num: self.group_num,
             claim_transfer_destination: self.claim_transfer_destination,
@@ -165,13 +240,13 @@ pub struct CreateVaultInstruction {
 }
 #[async_trait::async_trait(?Send)]
 impl ClientInstruction for CreateVaultInstruction {
-    type Accounts = mango_v3_reimbursement::accounts::CreateVault;
-    type Instruction = mango_v3_reimbursement::instruction::CreateVault;
+    type Accounts = cypher_v3_reimbursement::accounts::CreateVault;
+    type Instruction = cypher_v3_reimbursement::instruction::CreateVault;
     async fn to_instruction(
         &self,
         account_loader: impl ClientAccountLoader + 'async_trait,
     ) -> (Self::Accounts, instruction::Instruction) {
-        let program_id = mango_v3_reimbursement::id();
+        let program_id = cypher_v3_reimbursement::id();
 
         let group: Group = account_loader.load(&self.group).await.unwrap();
 
@@ -209,7 +284,7 @@ impl ClientInstruction for CreateVaultInstruction {
             claim_mint,
             token_program: Token::id(),
             system_program: System::id(),
-            rent: sysvar::rent::id(),
+            //rent: sysvar::rent::id(),
             associated_token_program: anchor_spl::associated_token::ID,
         };
 
@@ -228,13 +303,13 @@ pub struct StartReimbursementInstruction {
 }
 #[async_trait::async_trait(?Send)]
 impl ClientInstruction for StartReimbursementInstruction {
-    type Accounts = mango_v3_reimbursement::accounts::StartReimbursement;
-    type Instruction = mango_v3_reimbursement::instruction::StartReimbursement;
+    type Accounts = cypher_v3_reimbursement::accounts::StartReimbursement;
+    type Instruction = cypher_v3_reimbursement::instruction::StartReimbursement;
     async fn to_instruction(
         &self,
         _account_loader: impl ClientAccountLoader + 'async_trait,
     ) -> (Self::Accounts, instruction::Instruction) {
-        let program_id = mango_v3_reimbursement::id();
+        let program_id = cypher_v3_reimbursement::id();
         let instruction = Self::Instruction {};
 
         let accounts = Self::Accounts {
@@ -253,25 +328,25 @@ impl ClientInstruction for StartReimbursementInstruction {
 
 pub struct CreateReimbursementAccountInstruction {
     pub group: Pubkey,
-    pub mango_account_owner: Pubkey,
+    pub cypher_account_owner: Pubkey,
     pub payer: TestKeypair,
 }
 #[async_trait::async_trait(?Send)]
 impl ClientInstruction for CreateReimbursementAccountInstruction {
-    type Accounts = mango_v3_reimbursement::accounts::CreateReimbursementAccount;
-    type Instruction = mango_v3_reimbursement::instruction::CreateReimbursementAccount;
+    type Accounts = cypher_v3_reimbursement::accounts::CreateReimbursementAccount;
+    type Instruction = cypher_v3_reimbursement::instruction::CreateReimbursementAccount;
     async fn to_instruction(
         &self,
         _account_loader: impl ClientAccountLoader + 'async_trait,
     ) -> (Self::Accounts, instruction::Instruction) {
-        let program_id = mango_v3_reimbursement::id();
+        let program_id = cypher_v3_reimbursement::id();
         let instruction = Self::Instruction {};
 
         let reimbursement_account = Pubkey::find_program_address(
             &[
                 b"ReimbursementAccount".as_ref(),
                 self.group.as_ref(),
-                self.mango_account_owner.as_ref(),
+                self.cypher_account_owner.as_ref(),
             ],
             &program_id,
         )
@@ -280,7 +355,7 @@ impl ClientInstruction for CreateReimbursementAccountInstruction {
         let accounts = Self::Accounts {
             group: self.group,
             reimbursement_account,
-            mango_account_owner: self.mango_account_owner,
+            cypher_account_owner: self.cypher_account_owner,
             payer: self.payer.pubkey(),
             system_program: System::id(),
             rent: sysvar::rent::id(),
@@ -298,20 +373,20 @@ impl ClientInstruction for CreateReimbursementAccountInstruction {
 pub struct ReimburseInstruction {
     pub group: Pubkey,
     pub token_index: usize,
-    pub mango_account_owner: TestKeypair,
+    pub cypher_account_owner: TestKeypair,
     pub transfer_claim: bool,
     pub token_account: Pubkey,
     pub table_index: usize,
 }
 #[async_trait::async_trait(?Send)]
 impl ClientInstruction for ReimburseInstruction {
-    type Accounts = mango_v3_reimbursement::accounts::Reimburse;
-    type Instruction = mango_v3_reimbursement::instruction::Reimburse;
+    type Accounts = cypher_v3_reimbursement::accounts::Reimburse;
+    type Instruction = cypher_v3_reimbursement::instruction::Reimburse;
     async fn to_instruction(
         &self,
         account_loader: impl ClientAccountLoader + 'async_trait,
     ) -> (Self::Accounts, instruction::Instruction) {
-        let program_id = mango_v3_reimbursement::id();
+        let program_id = cypher_v3_reimbursement::id();
 
         let group: Group = account_loader.load(&self.group).await.unwrap();
 
@@ -325,7 +400,7 @@ impl ClientInstruction for ReimburseInstruction {
             &[
                 b"ReimbursementAccount".as_ref(),
                 self.group.as_ref(),
-                self.mango_account_owner.pubkey().as_ref(),
+                self.cypher_account_owner.pubkey().as_ref(),
             ],
             &program_id,
         )
@@ -341,8 +416,8 @@ impl ClientInstruction for ReimburseInstruction {
             vault: group.vaults[self.token_index],
             token_account: self.token_account,
             reimbursement_account,
-            mango_account_owner: self.mango_account_owner.pubkey(),
-            signer: self.mango_account_owner.pubkey(),
+            cypher_account_owner: self.cypher_account_owner.pubkey(),
+            signer: self.cypher_account_owner.pubkey(),
             claim_mint_token_account,
             claim_mint: group.claim_mints[self.token_index],
             table: group.table,
@@ -356,6 +431,6 @@ impl ClientInstruction for ReimburseInstruction {
     }
 
     fn signers(&self) -> Vec<TestKeypair> {
-        vec![self.mango_account_owner]
+        vec![self.cypher_account_owner]
     }
 }

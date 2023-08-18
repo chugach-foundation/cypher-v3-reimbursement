@@ -2,13 +2,12 @@ pub mod instructions;
 pub mod state;
 
 use instructions::*;
+use state::*;
 
-use anchor_lang::prelude::*;
-
-declare_id!("m3roABq4Ta3sGyFRLdY4LH1KN16zBtg586gJ3UxoBzb");
+declare_id!("c3eRRbjqWr3CKNpnYGJsy3MK98hbsJyhRziy46EvQkN");
 
 #[program]
-pub mod mango_v3_reimbursement {
+pub mod cypher_v3_reimbursement {
 
     use super::*;
 
@@ -30,6 +29,14 @@ pub mod mango_v3_reimbursement {
         new_authority: Pubkey,
     ) -> Result<()> {
         handle_change_group_authority(ctx, new_authority)
+    }
+
+    pub fn create_table(ctx: Context<CreateTable>, table_num: u32) -> Result<()> {
+        handle_create_table(ctx, table_num)
+    }
+
+    pub fn add_rows(ctx: Context<AddRows>, rows: Vec<Row>) -> Result<()> {
+        handle_add_rows(ctx, rows)
     }
 
     pub fn create_vault(ctx: Context<CreateVault>, token_index: usize) -> Result<()> {

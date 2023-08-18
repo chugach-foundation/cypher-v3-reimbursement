@@ -1,4 +1,4 @@
-use crate::state::{Group, ReimbursementAccount, Row};
+use crate::state::{Group, ReimbursementAccount, Row, Table};
 use crate::Error;
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Mint, Token, TokenAccount};
@@ -20,21 +20,21 @@ pub struct Reimburse<'info> {
 
     #[account(
         mut,
-        constraint = token_account.owner == mango_account_owner.key() @ Error::TokenAccountNotOwnedByMangoAccountOwner
+        constraint = token_account.owner == cypher_account_owner.key() @ Error::TokenAccountNotOwnedByMangoAccountOwner
     )]
     pub token_account: Box<Account<'info, TokenAccount>>,
     #[account(
         mut,
-        seeds = [b"ReimbursementAccount".as_ref(), group.key().as_ref(), mango_account_owner.key().as_ref()],
+        seeds = [b"ReimbursementAccount".as_ref(), group.key().as_ref(), cypher_account_owner.key().as_ref()],
         bump,
         constraint = group.load()?.is_testing() || !reimbursement_account.load()?.reimbursed(token_index) @ Error::AlreadyReimbursed,
     )]
     pub reimbursement_account: AccountLoader<'info, ReimbursementAccount>,
     /// CHECK: address is part of the ReimbursementAccount PDA
-    pub mango_account_owner: UncheckedAccount<'info>,
+    pub cypher_account_owner: UncheckedAccount<'info>,
 
     #[account (
-        constraint = signer.key() == mango_account_owner.key() || signer.key() == group.load()?.authority @ Error::BadSigner
+        constraint = signer.key() == cypher_account_owner.key() || signer.key() == group.load()?.authority @ Error::BadSigner
     )]
     pub signer: Signer<'info>,
 
@@ -49,9 +49,10 @@ pub struct Reimburse<'info> {
         address = group.load()?.claim_mints[token_index]
     )]
     pub claim_mint: Box<Account<'info, Mint>>,
-
-    /// CHECK:
-    pub table: UncheckedAccount<'info>,
+    #[account(
+        constraint = group.load()?.authority == table.load()?.authority
+    )]
+    pub table: AccountLoader<'info, Table>,
 
     pub token_program: Program<'info, Token>,
     pub system_program: Program<'info, System>,
@@ -90,17 +91,20 @@ pub fn handle_reimburse<'key, 'accounts, 'remaining, 'info>(
     let group = ctx.accounts.group.load()?;
 
     // More checks on table
-    let table_ai = &ctx.accounts.table;
+    let table_ai = &ctx.accounts.table.to_account_info();
     let data = table_ai.try_borrow_data()?;
     if !group.is_testing() {
-        require_keys_eq!(Pubkey::new(&data[5..37]), group.authority);
+        require_keys_eq!(
+            Pubkey::try_from_slice(&data[16..48]).unwrap(),
+            group.authority
+        );
     }
 
     // Verify entry in reimbursement table
     let row = Row::load(&data, index_into_table)?;
     require_keys_eq!(
         row.owner,
-        ctx.accounts.mango_account_owner.key(),
+        ctx.accounts.cypher_account_owner.key(),
         Error::TableRowHasWrongOwner
     );
 

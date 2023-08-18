@@ -51,7 +51,6 @@ pub struct CreateVault<'info> {
     pub token_program: Program<'info, Token>,
     pub associated_token_program: Program<'info, AssociatedToken>,
     pub system_program: Program<'info, System>,
-    pub rent: Sysvar<'info, Rent>,
 }
 
 pub fn handle_create_vault(ctx: Context<CreateVault>, token_index: usize) -> Result<()> {
@@ -65,7 +64,6 @@ pub fn handle_create_vault(ctx: Context<CreateVault>, token_index: usize) -> Res
         mint: ctx.accounts.claim_mint.to_account_info(),
         system_program: ctx.accounts.system_program.to_account_info(),
         token_program: ctx.accounts.token_program.to_account_info(),
-        rent: ctx.accounts.rent.to_account_info(),
     };
     let cpi_ctx = anchor_lang::context::CpiContext::new(cpi_program, cpi_accounts);
     anchor_spl::associated_token::create(cpi_ctx)?;

@@ -1,12 +1,12 @@
 [package]
-name = "mango-v3-reimbursement"
+name = "cypher-v3-reimbursement"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "mango_v3_reimbursement"
+name = "cypher_v3_reimbursement"
 
 [features]
 no-entrypoint = []
@@ -17,15 +17,15 @@ default = []
 test-bpf = []
 
 [dependencies]
-anchor-lang = { version = "0.25.0", features = ["init-if-needed"] }
-anchor-spl = { version = "0.25.0" }
-solana-program = "~1.10.29"
+anchor-lang = { version = "0.26.0", features = ["init-if-needed"] }
+anchor-spl = { version = "0.26.0" }
+solana-program = "~1.14.11"
 static_assertions = "1.1"
 
 [dev-dependencies]
-solana-sdk = { version = "~1.10.29", default-features = false }
-solana-program-test = "~1.10.29"
-solana-logger = "~1.10.29"
+solana-sdk = { version = "~1.14.11", default-features = false }
+solana-program-test = "~1.14.11"
+solana-logger = "~1.14.11"
 async-trait = "0.1.52"
 bytemuck = "^1.7.2"
 spl-token = { version = "^3.0.0", features = ["no-entrypoint"] }

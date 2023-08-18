@@ -3,13 +3,13 @@ seeds = true
 skip-lint = false
 
 [programs.localnet]
-mango_v3_reimbursement = "m3roABq4Ta3sGyFRLdY4LH1KN16zBtg586gJ3UxoBzb"
+cypher_v3_reimbursement = "c3eRRbjqWr3CKNpnYGJsy3MK98hbsJyhRziy46EvQkN"
 
 [programs.devnet]
-mango_v3_reimbursement = "m3roABq4Ta3sGyFRLdY4LH1KN16zBtg586gJ3UxoBzb"
+cypher_v3_reimbursement = "c3eRRbjqWr3CKNpnYGJsy3MK98hbsJyhRziy46EvQkN"
 
 [programs.mainnet]
-mango_v3_reimbursement = "m3roABq4Ta3sGyFRLdY4LH1KN16zBtg586gJ3UxoBzb"
+cypher_v3_reimbursement = "c3eRRbjqWr3CKNpnYGJsy3MK98hbsJyhRziy46EvQkN"
 
 [registry]
 url = "https://api.apr.dev"

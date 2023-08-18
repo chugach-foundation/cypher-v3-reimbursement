@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-use crate::state::Group;
+use crate::state::{Group, Table};
 
 #[derive(Accounts)]
 pub struct ChangeGroupAuthority<'info> {
@@ -10,9 +10,10 @@ pub struct ChangeGroupAuthority<'info> {
         has_one = table
     )]
     pub group: AccountLoader<'info, Group>,
-
-    /// CHECK: verification in handler
-    pub table: UncheckedAccount<'info>,
+    #[account(
+        has_one = authority
+    )]
+    pub table: AccountLoader<'info, Table>,
 
     pub authority: Signer<'info>,
 }
@@ -23,13 +24,6 @@ pub fn handle_change_group_authority(
 ) -> Result<()> {
     let mut group = ctx.accounts.group.load_mut()?;
     group.authority = new_authority;
-
-    // Sanity checks on table
-    let table_ai = &ctx.accounts.table;
-    let data = table_ai.try_borrow_data()?;
-    if !group.is_testing() {
-        require_keys_eq!(Pubkey::new(&data[5..37]), new_authority);
-    }
 
     msg!("Changed group authority to {:?}", new_authority);
 

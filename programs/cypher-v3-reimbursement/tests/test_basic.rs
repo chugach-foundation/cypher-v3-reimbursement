@@ -1,9 +1,9 @@
 #![cfg(feature = "test-bpf")]
 
-use solana_program_test::{BanksClientError, *};
-
-use mango_v3_reimbursement::state::*;
+use anchor_spl::token;
+use cypher_v3_reimbursement::state::*;
 use program_test::*;
+use solana_program_test::{BanksClientError, *};
 use std::sync::Arc;
 
 mod program_test;
@@ -55,6 +55,7 @@ async fn create_ata(
             &payer.pubkey(),
             &authority,
             &mint,
+            &token::ID,
         ),
     );
     tx.add_signer(payer);
@@ -78,10 +79,9 @@ async fn load_reimbursement(
 
 #[tokio::test]
 async fn test_basic() -> Result<()> {
-    use mango_v3_reimbursement::accounts;
+    use cypher_v3_reimbursement::accounts;
 
     let authority = TestKeypair::new();
-    let table = Pubkey::new_unique();
     let user1 = TestKeypair::new();
     let user2 = TestKeypair::new();
     let table_rows = vec![
@@ -98,15 +98,35 @@ async fn test_basic() -> Result<()> {
             balances: (0..16).collect::<Vec<u64>>().try_into().unwrap(),
         },
     ];
-    let table_account = make_table(authority.pubkey(), &table_rows);
 
     let mut builder = TestContextBuilder::new();
-    builder.test().add_account(table, table_account);
-
     let context = builder.start_default().await;
     let solana = &context.solana.clone();
 
     let payer = context.users[1].key;
+
+    let accounts::CreateTable { table, .. } = send_tx(
+        solana,
+        CreateTableInstruction {
+            table_num: 0,
+            payer,
+            authority,
+        },
+    )
+    .await
+    .unwrap();
+
+    send_tx(
+        solana,
+        AddRowsInstruction {
+            table,
+            payer,
+            authority,
+            rows: table_rows.clone(),
+        },
+    )
+    .await
+    .unwrap();
 
     let mut user1_token = vec![];
     for i in 0..2 {
@@ -180,7 +200,7 @@ async fn test_basic() -> Result<()> {
         solana,
         CreateReimbursementAccountInstruction {
             group,
-            mango_account_owner: user1.pubkey(),
+            cypher_account_owner: user1.pubkey(),
             payer,
         },
     )
@@ -192,7 +212,7 @@ async fn test_basic() -> Result<()> {
         solana,
         CreateReimbursementAccountInstruction {
             group,
-            mango_account_owner: user1.pubkey(),
+            cypher_account_owner: user1.pubkey(),
             payer,
         },
     )
@@ -206,7 +226,7 @@ async fn test_basic() -> Result<()> {
             group,
             token_index: 0,
             table_index: 0,
-            mango_account_owner: user1,
+            cypher_account_owner: user1,
             transfer_claim: true,
             token_account: user1_token[0],
         }
@@ -225,7 +245,7 @@ async fn test_basic() -> Result<()> {
             group,
             token_index: 0,
             table_index: 1,
-            mango_account_owner: user1,
+            cypher_account_owner: user1,
             transfer_claim: true,
             token_account: user1_token[0],
         }
@@ -240,7 +260,7 @@ async fn test_basic() -> Result<()> {
             group,
             token_index: 0,
             table_index: 0,
-            mango_account_owner: user1,
+            cypher_account_owner: user1,
             transfer_claim: false,
             token_account: user1_token[0],
         }
@@ -254,7 +274,7 @@ async fn test_basic() -> Result<()> {
             group,
             token_index: 0,
             table_index: 0,
-            mango_account_owner: user1,
+            cypher_account_owner: user1,
             transfer_claim: true,
             token_account: user1_token[0],
         },
@@ -278,7 +298,7 @@ async fn test_basic() -> Result<()> {
             group,
             token_index: 0,
             table_index: 0,
-            mango_account_owner: user1,
+            cypher_account_owner: user1,
             transfer_claim: true,
             token_account: user1_token[0],
         }
@@ -293,7 +313,7 @@ async fn test_basic() -> Result<()> {
             group,
             token_index: 1,
             table_index: 0,
-            mango_account_owner: user1,
+            cypher_account_owner: user1,
             transfer_claim: true,
             token_account: user1_token[1],
         },
@@ -317,7 +337,7 @@ async fn test_basic() -> Result<()> {
             group,
             token_index: 1,
             table_index: 0,
-            mango_account_owner: user1,
+            cypher_account_owner: user1,
             transfer_claim: true,
             token_account: user1_token[1],
         }
@@ -336,7 +356,7 @@ async fn test_basic() -> Result<()> {
         solana,
         CreateReimbursementAccountInstruction {
             group,
-            mango_account_owner: user2.pubkey(),
+            cypher_account_owner: user2.pubkey(),
             payer,
         },
     )
@@ -349,7 +369,7 @@ async fn test_basic() -> Result<()> {
             group,
             token_index: 1,
             table_index: 1,
-            mango_account_owner: user2,
+            cypher_account_owner: user2,
             transfer_claim: true,
             token_account: user2_token[1],
         },
@@ -364,7 +384,7 @@ async fn test_basic() -> Result<()> {
             group,
             token_index: 0,
             table_index: 1,
-            mango_account_owner: user2,
+            cypher_account_owner: user2,
             transfer_claim: true,
             token_account: user2_token[0],
         },
@@ -395,7 +415,7 @@ async fn test_basic() -> Result<()> {
             group,
             token_index: 15,
             table_index: 1,
-            mango_account_owner: user2,
+            cypher_account_owner: user2,
             transfer_claim: true,
             token_account: user2_token15,
         },

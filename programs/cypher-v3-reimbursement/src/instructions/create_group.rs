@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-use crate::state::{Group, Row};
+use crate::state::{Group, Row, Table};
 use crate::Error;
 
 #[derive(Accounts)]
@@ -15,8 +15,10 @@ pub struct CreateGroup<'info> {
     )]
     pub group: AccountLoader<'info, Group>,
 
-    /// CHECK: verification in handler
-    pub table: UncheckedAccount<'info>,
+    #[account(
+        has_one = authority
+    )]
+    pub table: AccountLoader<'info, Table>,
 
     #[account(mut)]
     pub payer: Signer<'info>,
@@ -40,15 +42,11 @@ pub fn handle_create_group(
     group.bump = *ctx.bumps.get("group").ok_or(Error::SomeError)?;
     group.testing = testing;
 
-    // Check authority on table
-    let table_ai = &ctx.accounts.table;
-    let data = table_ai.try_borrow_data()?;
-    if !group.is_testing() {
-        require_keys_eq!(Pubkey::new(&data[5..37]), group.authority);
-    }
+    let table_ai = ctx.accounts.table.to_account_info();
+    let table_data = &table_ai.try_borrow_data()?;
 
     // Some debug logging
-    let num_of_rows = Row::get_num_of_rows(&ctx.accounts.table.try_borrow_data()?)?;
+    let num_of_rows = Row::get_row_capacity(&table_data)?;
     msg!(
         "Created group (testing = {:?}) {:?} with table {:?} of {:?} rows, and claim_transfer_destination {:?}",
         group.is_testing(),
@@ -59,8 +57,7 @@ pub fn handle_create_group(
     );
     if num_of_rows > 2 {
         for index_into_table in 0..2 {
-            let data = &ctx.accounts.table.try_borrow_data()?;
-            let row = Row::load(data, index_into_table)?;
+            let row = Row::load(table_data, index_into_table)?;
             msg!("Debug: Row {:?} {:?}", index_into_table, row);
         }
     }

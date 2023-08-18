@@ -8,7 +8,7 @@ pub struct CreateReimbursementAccount<'info> {
 
     #[account(
         init_if_needed,
-        seeds = [b"ReimbursementAccount".as_ref(), group.key().as_ref(), mango_account_owner.key().as_ref()],
+        seeds = [b"ReimbursementAccount".as_ref(), group.key().as_ref(), cypher_account_owner.key().as_ref()],
         bump,
         payer = payer,
         space = 8 + std::mem::size_of::<ReimbursementAccount>(),
@@ -16,7 +16,7 @@ pub struct CreateReimbursementAccount<'info> {
     pub reimbursement_account: AccountLoader<'info, ReimbursementAccount>,
 
     /// CHECK: we want this be permissionless
-    pub mango_account_owner: UncheckedAccount<'info>,
+    pub cypher_account_owner: UncheckedAccount<'info>,
 
     #[account(mut)]
     pub payer: Signer<'info>,
