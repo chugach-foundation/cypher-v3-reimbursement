@@ -1,393 +1,393 @@
 export type CypherV3Reimbursement = {
-  "version": "0.1.0",
-  "name": "cypher_v3_reimbursement",
-  "instructions": [
+  version: "0.1.0";
+  name: "cypher_v3_reimbursement";
+  instructions: [
     {
-      "name": "createGroup",
-      "accounts": [
+      name: "createGroup";
+      accounts: [
         {
-          "name": "group",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
+          name: "group";
+          isMut: true;
+          isSigner: false;
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "type": "string",
-                "value": "Group"
+                kind: "const";
+                type: "string";
+                value: "Group";
               },
               {
-                "kind": "arg",
-                "type": "u32",
-                "path": "group_num"
+                kind: "arg";
+                type: "u32";
+                path: "group_num";
               }
-            ]
-          }
+            ];
+          };
         },
         {
-          "name": "table",
-          "isMut": false,
-          "isSigner": false
+          name: "table";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: "payer";
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority";
+          isMut: false;
+          isSigner: true;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
         }
-      ],
-      "args": [
+      ];
+      args: [
         {
-          "name": "groupNum",
-          "type": "u32"
+          name: "groupNum";
+          type: "u32";
         },
         {
-          "name": "claimTransferDestination",
-          "type": "publicKey"
+          name: "claimTransferDestination";
+          type: "publicKey";
         },
         {
-          "name": "testing",
-          "type": "u8"
+          name: "testing";
+          type: "u8";
         }
-      ]
+      ];
     },
     {
-      "name": "editGroup",
-      "accounts": [
+      name: "editGroup";
+      accounts: [
         {
-          "name": "group",
-          "isMut": true,
-          "isSigner": false
+          name: "group";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority";
+          isMut: false;
+          isSigner: true;
         }
-      ],
-      "args": [
+      ];
+      args: [
         {
-          "name": "table",
-          "type": "publicKey"
+          name: "table";
+          type: "publicKey";
         }
-      ]
+      ];
     },
     {
-      "name": "changeGroupAuthority",
-      "accounts": [
+      name: "changeAuthority";
+      accounts: [
         {
-          "name": "group",
-          "isMut": true,
-          "isSigner": false
+          name: "group";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "table",
-          "isMut": false,
-          "isSigner": false
+          name: "table";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority";
+          isMut: false;
+          isSigner: true;
         }
-      ],
-      "args": [
+      ];
+      args: [
         {
-          "name": "newAuthority",
-          "type": "publicKey"
+          name: "newAuthority";
+          type: "publicKey";
         }
-      ]
+      ];
     },
     {
-      "name": "createTable",
-      "accounts": [
+      name: "createTable";
+      accounts: [
         {
-          "name": "table",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
+          name: "table";
+          isMut: true;
+          isSigner: false;
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "type": "string",
-                "value": "Table"
+                kind: "const";
+                type: "string";
+                value: "Table";
               },
               {
-                "kind": "arg",
-                "type": "u32",
-                "path": "table_num"
+                kind: "arg";
+                type: "u32";
+                path: "table_num";
               }
-            ]
-          }
+            ];
+          };
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: "payer";
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority";
+          isMut: false;
+          isSigner: true;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
         }
-      ],
-      "args": [
+      ];
+      args: [
         {
-          "name": "tableNum",
-          "type": "u32"
+          name: "tableNum";
+          type: "u32";
         }
-      ]
+      ];
     },
     {
-      "name": "addRows",
-      "accounts": [
+      name: "addRows";
+      accounts: [
         {
-          "name": "table",
-          "isMut": true,
-          "isSigner": false
+          name: "table";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: "payer";
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority";
+          isMut: false;
+          isSigner: true;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
         }
-      ],
-      "args": [
+      ];
+      args: [
         {
-          "name": "rows",
-          "type": {
-            "vec": {
-              "defined": "Row"
-            }
-          }
+          name: "rows";
+          type: {
+            vec: {
+              defined: "Row";
+            };
+          };
         }
-      ]
+      ];
     },
     {
-      "name": "createVault",
-      "accounts": [
+      name: "createVault";
+      accounts: [
         {
-          "name": "group",
-          "isMut": true,
-          "isSigner": false
+          name: "group";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority";
+          isMut: false;
+          isSigner: true;
         },
         {
-          "name": "vault",
-          "isMut": true,
-          "isSigner": false
+          name: "vault";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "claimTransferTokenAccount",
-          "isMut": true,
-          "isSigner": false
+          name: "claimTransferTokenAccount";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "claimTransferDestination",
-          "isMut": false,
-          "isSigner": false
+          name: "claimTransferDestination";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "claimMint",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
+          name: "claimMint";
+          isMut: true;
+          isSigner: false;
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "type": "string",
-                "value": "Mint"
+                kind: "const";
+                type: "string";
+                value: "Mint";
               },
               {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "group"
+                kind: "account";
+                type: "publicKey";
+                path: "group";
               },
               {
-                "kind": "arg",
-                "type": {
-                  "defined": "usize"
-                },
-                "path": "token_index"
+                kind: "arg";
+                type: {
+                  defined: "usize";
+                };
+                path: "token_index";
               }
-            ]
-          }
+            ];
+          };
         },
         {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": false
+          name: "mint";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: "payer";
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "tokenProgram";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "associatedTokenProgram";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
         }
-      ],
-      "args": [
+      ];
+      args: [
         {
-          "name": "tokenIndex",
-          "type": {
-            "defined": "usize"
-          }
+          name: "tokenIndex";
+          type: {
+            defined: "usize";
+          };
         }
-      ]
+      ];
     },
     {
-      "name": "withdrawToAuthority",
-      "accounts": [
+      name: "withdrawToAuthority";
+      accounts: [
         {
-          "name": "group",
-          "isMut": false,
-          "isSigner": false
+          name: "group";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "vault",
-          "isMut": true,
-          "isSigner": false
+          name: "vault";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "authorityTokenAccount",
-          "isMut": true,
-          "isSigner": false
+          name: "authorityTokenAccount";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority";
+          isMut: false;
+          isSigner: true;
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "tokenProgram";
+          isMut: false;
+          isSigner: false;
         }
-      ],
-      "args": [
+      ];
+      args: [
         {
-          "name": "tokenIndex",
-          "type": {
-            "defined": "usize"
-          }
+          name: "tokenIndex";
+          type: {
+            defined: "usize";
+          };
         }
-      ]
+      ];
     },
     {
-      "name": "createReimbursementAccount",
-      "accounts": [
+      name: "createReimbursementAccount";
+      accounts: [
         {
-          "name": "group",
-          "isMut": false,
-          "isSigner": false
+          name: "group";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "reimbursementAccount",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
+          name: "reimbursementAccount";
+          isMut: true;
+          isSigner: false;
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "type": "string",
-                "value": "ReimbursementAccount"
+                kind: "const";
+                type: "string";
+                value: "ReimbursementAccount";
               },
               {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "group"
+                kind: "account";
+                type: "publicKey";
+                path: "group";
               },
               {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "cypher_account_owner"
+                kind: "account";
+                type: "publicKey";
+                path: "cypher_account_owner";
               }
-            ]
-          }
+            ];
+          };
         },
         {
-          "name": "cypherAccountOwner",
-          "isMut": false,
-          "isSigner": false
+          name: "cypherAccountOwner";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: "payer";
+          isMut: true;
+          isSigner: true;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
+          name: "rent";
+          isMut: false;
+          isSigner: false;
         }
-      ],
-      "args": []
+      ];
+      args: [];
     },
     {
-      "name": "startReimbursement",
-      "accounts": [
+      name: "startReimbursement";
+      accounts: [
         {
-          "name": "group",
-          "isMut": true,
-          "isSigner": false
+          name: "group";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority";
+          isMut: false;
+          isSigner: true;
         }
-      ],
-      "args": []
+      ];
+      args: [];
     },
     {
-      "name": "reimburse",
-      "docs": [
+      name: "reimburse";
+      docs: [
         "Disclaimer:",
         "Please make sure you and your users (of integrating programs) read and accept",
         "the following waiver when reclaiming their funds using below instruction:",
@@ -408,680 +408,662 @@ export type CypherV3Reimbursement = {
         "employees, or principals related to this matter. This release",
         "constitutes an express, informed, knowing and voluntary waiver",
         "and relinquishment to the fullest extent permitted by law."
-      ],
-      "accounts": [
+      ];
+      accounts: [
         {
-          "name": "group",
-          "isMut": false,
-          "isSigner": false
+          name: "group";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "vault",
-          "isMut": true,
-          "isSigner": false
+          name: "vault";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "tokenAccount",
-          "isMut": true,
-          "isSigner": false
+          name: "tokenAccount";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "reimbursementAccount",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
+          name: "reimbursementAccount";
+          isMut: true;
+          isSigner: false;
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "type": "string",
-                "value": "ReimbursementAccount"
+                kind: "const";
+                type: "string";
+                value: "ReimbursementAccount";
               },
               {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "group"
+                kind: "account";
+                type: "publicKey";
+                path: "group";
               },
               {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "cypher_account_owner"
+                kind: "account";
+                type: "publicKey";
+                path: "cypher_account_owner";
               }
-            ]
-          }
+            ];
+          };
         },
         {
-          "name": "cypherAccountOwner",
-          "isMut": false,
-          "isSigner": false
+          name: "cypherAccountOwner";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "signer",
-          "isMut": false,
-          "isSigner": true
+          name: "signer";
+          isMut: false;
+          isSigner: true;
         },
         {
-          "name": "claimMintTokenAccount",
-          "isMut": true,
-          "isSigner": false
+          name: "claimMintTokenAccount";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "claimMint",
-          "isMut": true,
-          "isSigner": false
+          name: "claimMint";
+          isMut: true;
+          isSigner: false;
         },
         {
-          "name": "table",
-          "isMut": false,
-          "isSigner": false
+          name: "table";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "tokenProgram";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram";
+          isMut: false;
+          isSigner: false;
         },
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
+          name: "rent";
+          isMut: false;
+          isSigner: false;
         }
-      ],
-      "args": [
+      ];
+      args: [
         {
-          "name": "tokenIndex",
-          "type": {
-            "defined": "usize"
-          }
+          name: "tokenIndex";
+          type: {
+            defined: "usize";
+          };
         },
         {
-          "name": "indexIntoTable",
-          "type": {
-            "defined": "usize"
-          }
+          name: "indexIntoTable";
+          type: {
+            defined: "usize";
+          };
         },
         {
-          "name": "transferClaim",
-          "type": "bool"
+          name: "transferClaim";
+          type: "bool";
         }
-      ]
+      ];
     }
-  ],
-  "accounts": [
+  ];
+  accounts: [
     {
-      "name": "group",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "group";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "groupNum",
-            "type": "u32"
+            name: "groupNum";
+            type: "u32";
           },
           {
-            "name": "table",
-            "type": "publicKey"
+            name: "table";
+            type: "publicKey";
           },
           {
-            "name": "claimTransferDestination",
-            "type": "publicKey"
+            name: "claimTransferDestination";
+            type: "publicKey";
           },
           {
-            "name": "authority",
-            "type": "publicKey"
+            name: "authority";
+            type: "publicKey";
           },
           {
-            "name": "vaults",
-            "type": {
-              "array": [
-                "publicKey",
-                16
-              ]
-            }
+            name: "vaults";
+            type: {
+              array: ["publicKey", 16];
+            };
           },
           {
-            "name": "claimMints",
-            "type": {
-              "array": [
-                "publicKey",
-                16
-              ]
-            }
+            name: "claimMints";
+            type: {
+              array: ["publicKey", 16];
+            };
           },
           {
-            "name": "mints",
-            "type": {
-              "array": [
-                "publicKey",
-                16
-              ]
-            }
+            name: "mints";
+            type: {
+              array: ["publicKey", 16];
+            };
           },
           {
-            "name": "reimbursementStarted",
-            "type": "u8"
+            name: "reimbursementStarted";
+            type: "u8";
           },
           {
-            "name": "bump",
-            "type": "u8"
+            name: "bump";
+            type: "u8";
           },
           {
-            "name": "testing",
-            "type": "u8"
+            name: "testing";
+            type: "u8";
           },
           {
-            "name": "padding",
-            "type": {
-              "array": [
-                "u8",
-                1
-              ]
-            }
+            name: "padding";
+            type: {
+              array: ["u8", 1];
+            };
           }
-        ]
-      }
+        ];
+      };
     },
     {
-      "name": "reimbursementAccount",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "reimbursementAccount";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "reimbursed",
-            "type": "u16"
+            name: "reimbursed";
+            type: "u16";
           },
           {
-            "name": "claimTransferred",
-            "type": "u16"
+            name: "claimTransferred";
+            type: "u16";
           },
           {
-            "name": "padding",
-            "type": {
-              "array": [
-                "u8",
-                4
-              ]
-            }
+            name: "padding";
+            type: {
+              array: ["u8", 4];
+            };
           }
-        ]
-      }
+        ];
+      };
     },
     {
-      "name": "table",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "table";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "tableNum",
-            "type": "u32"
+            name: "tableNum";
+            type: "u32";
           },
           {
-            "name": "numRows",
-            "type": "u32"
+            name: "numRows";
+            type: "u32";
           },
           {
-            "name": "authority",
-            "type": "publicKey"
+            name: "authority";
+            type: "publicKey";
           }
-        ]
-      }
+        ];
+      };
     }
-  ],
-  "types": [
+  ];
+  types: [
     {
-      "name": "Row",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "Row";
+      type: {
+        kind: "struct";
+        fields: [
           {
-            "name": "owner",
-            "type": "publicKey"
+            name: "owner";
+            type: "publicKey";
           },
           {
-            "name": "balances",
-            "type": {
-              "array": [
-                "u64",
-                16
-              ]
-            }
+            name: "balances";
+            type: {
+              array: ["u64", 16];
+            };
           }
-        ]
-      }
+        ];
+      };
     }
-  ],
-  "errors": [
+  ];
+  errors: [
     {
-      "code": 6000,
-      "name": "SomeError"
+      code: 6000;
+      name: "SomeError";
     },
     {
-      "code": 6001,
-      "name": "ReimbursementAlreadyStarted"
+      code: 6001;
+      name: "ReimbursementAlreadyStarted";
     },
     {
-      "code": 6002,
-      "name": "ReimbursementNotStarted"
+      code: 6002;
+      name: "ReimbursementNotStarted";
     },
     {
-      "code": 6003,
-      "name": "TokenAccountNotOwnedByMangoAccountOwner"
+      code: 6003;
+      name: "TokenAccountNotOwnedByMangoAccountOwner";
     },
     {
-      "code": 6004,
-      "name": "AlreadyReimbursed"
+      code: 6004;
+      name: "AlreadyReimbursed";
     },
     {
-      "code": 6005,
-      "name": "BadSigner"
+      code: 6005;
+      name: "BadSigner";
     },
     {
-      "code": 6006,
-      "name": "TestingOnly"
+      code: 6006;
+      name: "TestingOnly";
     },
     {
-      "code": 6007,
-      "name": "TableRowHasWrongOwner"
+      code: 6007;
+      name: "TableRowHasWrongOwner";
     },
     {
-      "code": 6008,
-      "name": "MustTransferClaim"
+      code: 6008;
+      name: "MustTransferClaim";
     }
-  ]
+  ];
 };
 
 export const IDL: CypherV3Reimbursement = {
-  "version": "0.1.0",
-  "name": "cypher_v3_reimbursement",
-  "instructions": [
+  version: "0.1.0",
+  name: "cypher_v3_reimbursement",
+  instructions: [
     {
-      "name": "createGroup",
-      "accounts": [
+      name: "createGroup",
+      accounts: [
         {
-          "name": "group",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
+          name: "group",
+          isMut: true,
+          isSigner: false,
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "type": "string",
-                "value": "Group"
+                kind: "const",
+                type: "string",
+                value: "Group",
               },
               {
-                "kind": "arg",
-                "type": "u32",
-                "path": "group_num"
-              }
-            ]
-          }
+                kind: "arg",
+                type: "u32",
+                path: "group_num",
+              },
+            ],
+          },
         },
         {
-          "name": "table",
-          "isMut": false,
-          "isSigner": false
+          name: "table",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: "payer",
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority",
+          isMut: false,
+          isSigner: true,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "groupNum",
-          "type": "u32"
+          name: "groupNum",
+          type: "u32",
         },
         {
-          "name": "claimTransferDestination",
-          "type": "publicKey"
+          name: "claimTransferDestination",
+          type: "publicKey",
         },
         {
-          "name": "testing",
-          "type": "u8"
-        }
-      ]
+          name: "testing",
+          type: "u8",
+        },
+      ],
     },
     {
-      "name": "editGroup",
-      "accounts": [
+      name: "editGroup",
+      accounts: [
         {
-          "name": "group",
-          "isMut": true,
-          "isSigner": false
+          name: "group",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
-        }
+          name: "authority",
+          isMut: false,
+          isSigner: true,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "table",
-          "type": "publicKey"
-        }
-      ]
+          name: "table",
+          type: "publicKey",
+        },
+      ],
     },
     {
-      "name": "changeGroupAuthority",
-      "accounts": [
+      name: "changeAuthority",
+      accounts: [
         {
-          "name": "group",
-          "isMut": true,
-          "isSigner": false
+          name: "group",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "table",
-          "isMut": false,
-          "isSigner": false
+          name: "table",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
-        }
+          name: "authority",
+          isMut: false,
+          isSigner: true,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "newAuthority",
-          "type": "publicKey"
-        }
-      ]
+          name: "newAuthority",
+          type: "publicKey",
+        },
+      ],
     },
     {
-      "name": "createTable",
-      "accounts": [
+      name: "createTable",
+      accounts: [
         {
-          "name": "table",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
+          name: "table",
+          isMut: true,
+          isSigner: false,
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "type": "string",
-                "value": "Table"
+                kind: "const",
+                type: "string",
+                value: "Table",
               },
               {
-                "kind": "arg",
-                "type": "u32",
-                "path": "table_num"
-              }
-            ]
-          }
+                kind: "arg",
+                type: "u32",
+                path: "table_num",
+              },
+            ],
+          },
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: "payer",
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority",
+          isMut: false,
+          isSigner: true,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "tableNum",
-          "type": "u32"
-        }
-      ]
+          name: "tableNum",
+          type: "u32",
+        },
+      ],
     },
     {
-      "name": "addRows",
-      "accounts": [
+      name: "addRows",
+      accounts: [
         {
-          "name": "table",
-          "isMut": true,
-          "isSigner": false
+          name: "table",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: "payer",
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority",
+          isMut: false,
+          isSigner: true,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "rows",
-          "type": {
-            "vec": {
-              "defined": "Row"
-            }
-          }
-        }
-      ]
+          name: "rows",
+          type: {
+            vec: {
+              defined: "Row",
+            },
+          },
+        },
+      ],
     },
     {
-      "name": "createVault",
-      "accounts": [
+      name: "createVault",
+      accounts: [
         {
-          "name": "group",
-          "isMut": true,
-          "isSigner": false
+          name: "group",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority",
+          isMut: false,
+          isSigner: true,
         },
         {
-          "name": "vault",
-          "isMut": true,
-          "isSigner": false
+          name: "vault",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "claimTransferTokenAccount",
-          "isMut": true,
-          "isSigner": false
+          name: "claimTransferTokenAccount",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "claimTransferDestination",
-          "isMut": false,
-          "isSigner": false
+          name: "claimTransferDestination",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "claimMint",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
+          name: "claimMint",
+          isMut: true,
+          isSigner: false,
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "type": "string",
-                "value": "Mint"
+                kind: "const",
+                type: "string",
+                value: "Mint",
               },
               {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "group"
+                kind: "account",
+                type: "publicKey",
+                path: "group",
               },
               {
-                "kind": "arg",
-                "type": {
-                  "defined": "usize"
+                kind: "arg",
+                type: {
+                  defined: "usize",
                 },
-                "path": "token_index"
-              }
-            ]
-          }
+                path: "token_index",
+              },
+            ],
+          },
         },
         {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": false
+          name: "mint",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: "payer",
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "associatedTokenProgram",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "tokenIndex",
-          "type": {
-            "defined": "usize"
-          }
-        }
-      ]
+          name: "tokenIndex",
+          type: {
+            defined: "usize",
+          },
+        },
+      ],
     },
     {
-      "name": "withdrawToAuthority",
-      "accounts": [
+      name: "withdrawToAuthority",
+      accounts: [
         {
-          "name": "group",
-          "isMut": false,
-          "isSigner": false
+          name: "group",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "vault",
-          "isMut": true,
-          "isSigner": false
+          name: "vault",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "authorityTokenAccount",
-          "isMut": true,
-          "isSigner": false
+          name: "authorityTokenAccount",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
+          name: "authority",
+          isMut: false,
+          isSigner: true,
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "tokenIndex",
-          "type": {
-            "defined": "usize"
-          }
-        }
-      ]
+          name: "tokenIndex",
+          type: {
+            defined: "usize",
+          },
+        },
+      ],
     },
     {
-      "name": "createReimbursementAccount",
-      "accounts": [
+      name: "createReimbursementAccount",
+      accounts: [
         {
-          "name": "group",
-          "isMut": false,
-          "isSigner": false
+          name: "group",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "reimbursementAccount",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
+          name: "reimbursementAccount",
+          isMut: true,
+          isSigner: false,
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "type": "string",
-                "value": "ReimbursementAccount"
+                kind: "const",
+                type: "string",
+                value: "ReimbursementAccount",
               },
               {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "group"
+                kind: "account",
+                type: "publicKey",
+                path: "group",
               },
               {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "cypher_account_owner"
-              }
-            ]
-          }
+                kind: "account",
+                type: "publicKey",
+                path: "cypher_account_owner",
+              },
+            ],
+          },
         },
         {
-          "name": "cypherAccountOwner",
-          "isMut": false,
-          "isSigner": false
+          name: "cypherAccountOwner",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
+          name: "payer",
+          isMut: true,
+          isSigner: true,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: "rent",
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": []
+      args: [],
     },
     {
-      "name": "startReimbursement",
-      "accounts": [
+      name: "startReimbursement",
+      accounts: [
         {
-          "name": "group",
-          "isMut": true,
-          "isSigner": false
+          name: "group",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
-        }
+          name: "authority",
+          isMut: false,
+          isSigner: true,
+        },
       ],
-      "args": []
+      args: [],
     },
     {
-      "name": "reimburse",
-      "docs": [
+      name: "reimburse",
+      docs: [
         "Disclaimer:",
         "Please make sure you and your users (of integrating programs) read and accept",
         "the following waiver when reclaiming their funds using below instruction:",
@@ -1101,287 +1083,269 @@ export const IDL: CypherV3Reimbursement = {
         "contributors, and any of their agents, affiliates, officers,",
         "employees, or principals related to this matter. This release",
         "constitutes an express, informed, knowing and voluntary waiver",
-        "and relinquishment to the fullest extent permitted by law."
+        "and relinquishment to the fullest extent permitted by law.",
       ],
-      "accounts": [
+      accounts: [
         {
-          "name": "group",
-          "isMut": false,
-          "isSigner": false
+          name: "group",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "vault",
-          "isMut": true,
-          "isSigner": false
+          name: "vault",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "tokenAccount",
-          "isMut": true,
-          "isSigner": false
+          name: "tokenAccount",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "reimbursementAccount",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
+          name: "reimbursementAccount",
+          isMut: true,
+          isSigner: false,
+          pda: {
+            seeds: [
               {
-                "kind": "const",
-                "type": "string",
-                "value": "ReimbursementAccount"
+                kind: "const",
+                type: "string",
+                value: "ReimbursementAccount",
               },
               {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "group"
+                kind: "account",
+                type: "publicKey",
+                path: "group",
               },
               {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "cypher_account_owner"
-              }
-            ]
-          }
+                kind: "account",
+                type: "publicKey",
+                path: "cypher_account_owner",
+              },
+            ],
+          },
         },
         {
-          "name": "cypherAccountOwner",
-          "isMut": false,
-          "isSigner": false
+          name: "cypherAccountOwner",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "signer",
-          "isMut": false,
-          "isSigner": true
+          name: "signer",
+          isMut: false,
+          isSigner: true,
         },
         {
-          "name": "claimMintTokenAccount",
-          "isMut": true,
-          "isSigner": false
+          name: "claimMintTokenAccount",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "claimMint",
-          "isMut": true,
-          "isSigner": false
+          name: "claimMint",
+          isMut: true,
+          isSigner: false,
         },
         {
-          "name": "table",
-          "isMut": false,
-          "isSigner": false
+          name: "table",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
         },
         {
-          "name": "rent",
-          "isMut": false,
-          "isSigner": false
-        }
+          name: "rent",
+          isMut: false,
+          isSigner: false,
+        },
       ],
-      "args": [
+      args: [
         {
-          "name": "tokenIndex",
-          "type": {
-            "defined": "usize"
-          }
+          name: "tokenIndex",
+          type: {
+            defined: "usize",
+          },
         },
         {
-          "name": "indexIntoTable",
-          "type": {
-            "defined": "usize"
-          }
+          name: "indexIntoTable",
+          type: {
+            defined: "usize",
+          },
         },
         {
-          "name": "transferClaim",
-          "type": "bool"
-        }
-      ]
-    }
+          name: "transferClaim",
+          type: "bool",
+        },
+      ],
+    },
   ],
-  "accounts": [
+  accounts: [
     {
-      "name": "group",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "group",
+      type: {
+        kind: "struct",
+        fields: [
           {
-            "name": "groupNum",
-            "type": "u32"
+            name: "groupNum",
+            type: "u32",
           },
           {
-            "name": "table",
-            "type": "publicKey"
+            name: "table",
+            type: "publicKey",
           },
           {
-            "name": "claimTransferDestination",
-            "type": "publicKey"
+            name: "claimTransferDestination",
+            type: "publicKey",
           },
           {
-            "name": "authority",
-            "type": "publicKey"
+            name: "authority",
+            type: "publicKey",
           },
           {
-            "name": "vaults",
-            "type": {
-              "array": [
-                "publicKey",
-                16
-              ]
-            }
+            name: "vaults",
+            type: {
+              array: ["publicKey", 16],
+            },
           },
           {
-            "name": "claimMints",
-            "type": {
-              "array": [
-                "publicKey",
-                16
-              ]
-            }
+            name: "claimMints",
+            type: {
+              array: ["publicKey", 16],
+            },
           },
           {
-            "name": "mints",
-            "type": {
-              "array": [
-                "publicKey",
-                16
-              ]
-            }
+            name: "mints",
+            type: {
+              array: ["publicKey", 16],
+            },
           },
           {
-            "name": "reimbursementStarted",
-            "type": "u8"
+            name: "reimbursementStarted",
+            type: "u8",
           },
           {
-            "name": "bump",
-            "type": "u8"
+            name: "bump",
+            type: "u8",
           },
           {
-            "name": "testing",
-            "type": "u8"
+            name: "testing",
+            type: "u8",
           },
           {
-            "name": "padding",
-            "type": {
-              "array": [
-                "u8",
-                1
-              ]
-            }
-          }
-        ]
-      }
+            name: "padding",
+            type: {
+              array: ["u8", 1],
+            },
+          },
+        ],
+      },
     },
     {
-      "name": "reimbursementAccount",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "reimbursementAccount",
+      type: {
+        kind: "struct",
+        fields: [
           {
-            "name": "reimbursed",
-            "type": "u16"
+            name: "reimbursed",
+            type: "u16",
           },
           {
-            "name": "claimTransferred",
-            "type": "u16"
+            name: "claimTransferred",
+            type: "u16",
           },
           {
-            "name": "padding",
-            "type": {
-              "array": [
-                "u8",
-                4
-              ]
-            }
-          }
-        ]
-      }
+            name: "padding",
+            type: {
+              array: ["u8", 4],
+            },
+          },
+        ],
+      },
     },
     {
-      "name": "table",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "table",
+      type: {
+        kind: "struct",
+        fields: [
           {
-            "name": "tableNum",
-            "type": "u32"
+            name: "tableNum",
+            type: "u32",
           },
           {
-            "name": "numRows",
-            "type": "u32"
+            name: "numRows",
+            type: "u32",
           },
           {
-            "name": "authority",
-            "type": "publicKey"
-          }
-        ]
-      }
-    }
+            name: "authority",
+            type: "publicKey",
+          },
+        ],
+      },
+    },
   ],
-  "types": [
+  types: [
     {
-      "name": "Row",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      name: "Row",
+      type: {
+        kind: "struct",
+        fields: [
           {
-            "name": "owner",
-            "type": "publicKey"
+            name: "owner",
+            type: "publicKey",
           },
           {
-            "name": "balances",
-            "type": {
-              "array": [
-                "u64",
-                16
-              ]
-            }
-          }
-        ]
-      }
-    }
+            name: "balances",
+            type: {
+              array: ["u64", 16],
+            },
+          },
+        ],
+      },
+    },
   ],
-  "errors": [
+  errors: [
     {
-      "code": 6000,
-      "name": "SomeError"
+      code: 6000,
+      name: "SomeError",
     },
     {
-      "code": 6001,
-      "name": "ReimbursementAlreadyStarted"
+      code: 6001,
+      name: "ReimbursementAlreadyStarted",
     },
     {
-      "code": 6002,
-      "name": "ReimbursementNotStarted"
+      code: 6002,
+      name: "ReimbursementNotStarted",
     },
     {
-      "code": 6003,
-      "name": "TokenAccountNotOwnedByMangoAccountOwner"
+      code: 6003,
+      name: "TokenAccountNotOwnedByMangoAccountOwner",
     },
     {
-      "code": 6004,
-      "name": "AlreadyReimbursed"
+      code: 6004,
+      name: "AlreadyReimbursed",
     },
     {
-      "code": 6005,
-      "name": "BadSigner"
+      code: 6005,
+      name: "BadSigner",
     },
     {
-      "code": 6006,
-      "name": "TestingOnly"
+      code: 6006,
+      name: "TestingOnly",
     },
     {
-      "code": 6007,
-      "name": "TableRowHasWrongOwner"
+      code: 6007,
+      name: "TableRowHasWrongOwner",
     },
     {
-      "code": 6008,
-      "name": "MustTransferClaim"
-    }
-  ]
+      code: 6008,
+      name: "MustTransferClaim",
+    },
+  ],
 };
