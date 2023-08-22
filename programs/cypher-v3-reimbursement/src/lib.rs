@@ -24,11 +24,8 @@ pub mod cypher_v3_reimbursement {
         handle_edit_group(ctx, table)
     }
 
-    pub fn change_group_authority(
-        ctx: Context<ChangeGroupAuthority>,
-        new_authority: Pubkey,
-    ) -> Result<()> {
-        handle_change_group_authority(ctx, new_authority)
+    pub fn change_authority(ctx: Context<ChangeAuthority>, new_authority: Pubkey) -> Result<()> {
+        handle_change_authority(ctx, new_authority)
     }
 
     pub fn create_table(ctx: Context<CreateTable>, table_num: u32) -> Result<()> {

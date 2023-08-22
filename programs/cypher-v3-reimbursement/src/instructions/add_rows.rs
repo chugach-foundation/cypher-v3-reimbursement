@@ -40,7 +40,7 @@ pub fn handle_add_rows(ctx: Context<AddRows>, rows: Vec<Row>) -> Result<()> {
                     to: table_ai.clone(),
                 },
             ),
-            new_rent_minimum - old_table_rent,
+            new_rent_minimum.saturating_sub(old_table_rent),
         )?;
 
         table_ai.realloc(new_table_size, false)?;
