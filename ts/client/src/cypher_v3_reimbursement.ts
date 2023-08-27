@@ -233,9 +233,7 @@ export type CypherV3Reimbursement = {
               },
               {
                 kind: "arg";
-                type: {
-                  defined: "usize";
-                };
+                type: "u64";
                 path: "token_index";
               }
             ];
@@ -270,9 +268,7 @@ export type CypherV3Reimbursement = {
       args: [
         {
           name: "tokenIndex";
-          type: {
-            defined: "usize";
-          };
+          type: "u64";
         }
       ];
     },
@@ -308,9 +304,7 @@ export type CypherV3Reimbursement = {
       args: [
         {
           name: "tokenIndex";
-          type: {
-            defined: "usize";
-          };
+          type: "u64";
         }
       ];
     },
@@ -493,15 +487,11 @@ export type CypherV3Reimbursement = {
       args: [
         {
           name: "tokenIndex";
-          type: {
-            defined: "usize";
-          };
+          type: "u64";
         },
         {
           name: "indexIntoTable";
-          type: {
-            defined: "usize";
-          };
+          type: "u64";
         },
         {
           name: "transferClaim";
@@ -909,9 +899,7 @@ export const IDL: CypherV3Reimbursement = {
               },
               {
                 kind: "arg",
-                type: {
-                  defined: "usize",
-                },
+                type: "u64",
                 path: "token_index",
               },
             ],
@@ -946,9 +934,7 @@ export const IDL: CypherV3Reimbursement = {
       args: [
         {
           name: "tokenIndex",
-          type: {
-            defined: "usize",
-          },
+          type: "u64",
         },
       ],
     },
@@ -984,9 +970,7 @@ export const IDL: CypherV3Reimbursement = {
       args: [
         {
           name: "tokenIndex",
-          type: {
-            defined: "usize",
-          },
+          type: "u64",
         },
       ],
     },
@@ -1169,15 +1153,11 @@ export const IDL: CypherV3Reimbursement = {
       args: [
         {
           name: "tokenIndex",
-          type: {
-            defined: "usize",
-          },
+          type: "u64",
         },
         {
           name: "indexIntoTable",
-          type: {
-            defined: "usize",
-          },
+          type: "u64",
         },
         {
           name: "transferClaim",
