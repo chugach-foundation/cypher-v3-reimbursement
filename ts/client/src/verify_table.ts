@@ -69,7 +69,7 @@ async function main() {
     const tableNumRows = tableAccountInfo.data.readUint32LE(
       tableAccountNumRowsOffset
     );
-    console.log(`Loaded table account with ${tableNumRows}`);
+    console.log(`Loaded table account with ${tableNumRows} rows.`);
 
     const tableRowsData = tableAccountInfo.data.subarray(
       tableAccountHeaderSize
