@@ -3,7 +3,7 @@
 //   Config,
 //   MangoClient,
 // } from "@blockworks-foundation/mango-client";
-// import { AnchorProvider, Provider, Wallet } from "@project-serum/anchor";
+// import { AnchorProvider, Provider, Wallet } from "@coral-xyz/anchor";
 // import {
 //   Connection,
 //   Keypair,

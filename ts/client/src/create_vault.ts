@@ -13,7 +13,7 @@ import {
   SystemProgram,
   Transaction,
 } from "@solana/web3.js";
-import { Wallet, AnchorProvider, Program, BN } from "@project-serum/anchor";
+import { Wallet, AnchorProvider, Program, BN } from "@coral-xyz/anchor";
 import { ID, CypherV3ReimbursementClient } from "./client";
 import { CypherV3Reimbursement, IDL } from "./cypher_v3_reimbursement";
 import {

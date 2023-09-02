@@ -7,10 +7,10 @@ import {
   CypherClient,
 } from "@chugach-foundation/cypher-client";
 import { Connection, Keypair, PublicKey, SystemProgram } from "@solana/web3.js";
-import { Wallet, AnchorProvider, Program, BN } from "@project-serum/anchor";
+import { Wallet, AnchorProvider, Program, BN } from "@coral-xyz/anchor";
 import { ID, CypherV3ReimbursementClient } from "./client";
 import { CypherV3Reimbursement, IDL } from "./cypher_v3_reimbursement";
-import { TypeDef } from "@project-serum/anchor/dist/cjs/program/namespace/types";
+import { TypeDef } from "@coral-xyz/anchor/dist/cjs/program/namespace/types";
 
 /// Env
 const CLUSTER_URL =

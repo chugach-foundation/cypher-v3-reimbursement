@@ -7,7 +7,7 @@ import {
   CypherClient,
 } from "@chugach-foundation/cypher-client";
 import { Connection, Keypair, PublicKey, SystemProgram } from "@solana/web3.js";
-import { Wallet, AnchorProvider, Program } from "@project-serum/anchor";
+import { Wallet, AnchorProvider, Program } from "@coral-xyz/anchor";
 import { ID, CypherV3ReimbursementClient } from "./client";
 import { CypherV3Reimbursement, IDL } from "./cypher_v3_reimbursement";
 

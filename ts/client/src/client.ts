@@ -1,4 +1,4 @@
-import { Program, Provider } from "@project-serum/anchor";
+import { Program, Provider } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import { CypherV3Reimbursement, IDL } from "./cypher_v3_reimbursement";
 
