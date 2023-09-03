@@ -38,6 +38,7 @@ async function main() {
     provider
   );
 
+  console.log("Table Number: " + TABLE_NUM);
   const tableNumBuffer = Buffer.alloc(4);
   tableNumBuffer.writeUInt32LE(TABLE_NUM!);
   const [tableAccount] = await PublicKey.findProgramAddress(
@@ -45,6 +46,7 @@ async function main() {
     program.programId
   );
 
+  console.log("Group Number: " + GROUP_NUM);
   const groupNumBuffer = Buffer.alloc(4);
   groupNumBuffer.writeUInt32LE(GROUP_NUM!);
   const [groupAccount] = await PublicKey.findProgramAddress(

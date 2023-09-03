@@ -6,7 +6,13 @@ import {
   Config,
   CypherClient,
 } from "@chugach-foundation/cypher-client";
-import { Connection, Keypair, PublicKey, SystemProgram } from "@solana/web3.js";
+import {
+  Connection,
+  Keypair,
+  PublicKey,
+  SendTransactionError,
+  SystemProgram,
+} from "@solana/web3.js";
 import { Wallet, AnchorProvider, Program, BN } from "@coral-xyz/anchor";
 import { ID, CypherV3ReimbursementClient } from "./client";
 import { CypherV3Reimbursement, IDL } from "./cypher_v3_reimbursement";
@@ -61,7 +67,11 @@ async function main() {
 
   const rowsFromCsv = [];
   fs.createReadStream(
-    path.resolve(__dirname, "assets", "../../../../assets/devnet-test.csv")
+    path.resolve(
+      __dirname,
+      "assets",
+      "../../../../assets/account-packages-09-02-2023.csv"
+    )
   )
     .pipe(csv.parse({ headers: true }))
     .on("data", (row) => rowsFromCsv.push(row))
@@ -89,30 +99,56 @@ async function main() {
 
       const totalTransactions = Math.round(rowsToAdd.length / 6);
 
+      let currTx = 1;
+
       for (let i = 0; i < rowsToAdd.length; i += 6) {
         const chunk = rowsToAdd.slice(i, i + 6);
         // do whatever
-        console.log(chunk);
-        const sig = await program.methods
-          .addRows(chunk)
-          .accountsStrict({
-            table: tableAccount,
-            payer: admin.publicKey,
-            authority: admin.publicKey,
-            systemProgram: SystemProgram.programId,
-          })
-          .rpc();
+        for (const row of chunk) {
+          console.log(
+            "Owner: " +
+              row.owner +
+              " Balances: " +
+              row.balances.map((i) => i.toNumber())
+          );
+        }
+        try {
+          const sig = await program.methods
+            .addRows(chunk)
+            .accountsStrict({
+              table: tableAccount,
+              payer: admin.publicKey,
+              authority: admin.publicKey,
+              systemProgram: SystemProgram.programId,
+            })
+            .rpc();
 
-        const currTx = i + 1;
-
-        console.log(
-          "Transaction " +
-            currTx +
-            " of " +
-            totalTransactions +
-            " Signature: " +
-            sig
-        );
+          if (sig) {
+            console.log(
+              "Transaction " +
+                currTx +
+                " of " +
+                totalTransactions +
+                " Signature: " +
+                sig
+            );
+            currTx += 1;
+          } else {
+            console.log("Failed Transaction Submission: " + sig);
+          }
+        } catch (e) {
+          let error: SendTransactionError = null;
+          if (e instanceof SendTransactionError) error = e;
+          if (error != null) {
+            console.log("Simulation Logs: ");
+            console.log("Error: " + error);
+            if (error.logs && Array.isArray(error.logs)) {
+              const traceIndent = "\n    ";
+              const logTrace = traceIndent + error.logs.join(traceIndent);
+              console.log(logTrace);
+            }
+          }
+        }
       }
     });
 }

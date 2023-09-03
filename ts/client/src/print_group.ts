@@ -37,20 +37,13 @@ async function main() {
     await cypherV3ReimbursementClient.program.account.group.all()
   ).find((group) => group.account.groupNum === GROUP_NUM);
 
-  console.log("Printing Table " + group?.account.table.toString());
+  console.log("Printing Group " + group?.account.table.toString());
 
-  const rows = await cypherV3ReimbursementClient.decodeTable(group.account);
-
-  for (const row of rows) {
-    console.log(
-      "Owner: " +
-        row.owner +
-        " Balances: " +
-        row.balances.map((i) => i.toNumber())
-    );
+  for (const vault of group.account.vaults) {
+    if (vault.toString() != PublicKey.default.toString()) {
+      console.log("Vault: " + vault.toString());
+    }
   }
-
-  console.log("Decoded Table With " + rows.length + " Rows");
 }
 
 main();

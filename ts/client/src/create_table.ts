@@ -6,7 +6,13 @@ import {
   Config,
   CypherClient,
 } from "@chugach-foundation/cypher-client";
-import { Connection, Keypair, PublicKey, SystemProgram } from "@solana/web3.js";
+import {
+  Connection,
+  Keypair,
+  PublicKey,
+  SendTransactionError,
+  SystemProgram,
+} from "@solana/web3.js";
 import { Wallet, AnchorProvider, Program } from "@coral-xyz/anchor";
 import { ID, CypherV3ReimbursementClient } from "./client";
 import { CypherV3Reimbursement, IDL } from "./cypher_v3_reimbursement";
@@ -30,6 +36,7 @@ async function main() {
   const admin = Keypair.fromSecretKey(
     Buffer.from(JSON.parse(fs.readFileSync(PAYER_KEYPAIR!, "utf-8")))
   );
+  console.log("Using Keypair: " + admin.publicKey.toString());
   const adminWallet = new Wallet(admin);
   const provider = new AnchorProvider(connection, adminWallet, options);
   const program = new Program<CypherV3Reimbursement>(
@@ -37,6 +44,8 @@ async function main() {
     ID,
     provider
   );
+
+  console.log("Table Number: " + TABLE_NUM!);
 
   const tableNumBuffer = Buffer.alloc(4);
   tableNumBuffer.writeUInt32LE(TABLE_NUM!);
@@ -47,20 +56,34 @@ async function main() {
 
   console.log("Creating Table " + tableAccount.toString());
 
-  const sig = await program.methods
-    .createTable(TABLE_NUM!)
-    .accountsStrict({
-      table: tableAccount,
-      payer: admin.publicKey,
-      authority: admin.publicKey,
-      systemProgram: SystemProgram.programId,
-    })
-    .rpc();
+  try {
+    const sig = await program.methods
+      .createTable(TABLE_NUM!)
+      .accountsStrict({
+        table: tableAccount,
+        payer: admin.publicKey,
+        authority: admin.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
 
-  if (sig) {
-    console.log("Transaction Signature: " + sig);
-  } else {
-    console.log("Failed Transaction Submission: " + sig);
+    if (sig) {
+      console.log("Transaction Signature: " + sig);
+    } else {
+      console.log("Failed Transaction Submission: " + sig);
+    }
+  } catch (e) {
+    let error: SendTransactionError = null;
+    if (e instanceof SendTransactionError) error = e;
+    if (error != null) {
+      console.log("Simulation Logs: ");
+      console.log("Error: " + error);
+      if (error.logs && Array.isArray(error.logs)) {
+        const traceIndent = "\n    ";
+        const logTrace = traceIndent + error.logs.join(traceIndent);
+        console.log(logTrace);
+      }
+    }
   }
 }
 
